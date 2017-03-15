@@ -34,7 +34,10 @@ class YnhPlugin extends Plugin
 
         // If no users found, create the first one
         if (!count($user_check) > 0) {
-            $username = $this->createUserFromYnh();
+            if (!$username = $this->createUserFromYnh()) {
+                $this->grav['log']->error('User creation failed, credentials missing');
+                throw new \RuntimeException('User creation failed, credentials missing');
+            }
             $this->authenticateAndRedirectToAdminPanel($username);
         }
     }
@@ -46,6 +49,11 @@ class YnhPlugin extends Plugin
     {
         $auth     = HttpbasicauthPlugin::extractFromHeaders();
         $username = $auth['username'];
+
+        if (empty($username)) {
+            $this->grav['log']->info('HTTP basic auth seems empty');
+            return false;
+        }
 
         $user = new User([
             'password' => $auth['password'],
@@ -74,7 +82,6 @@ class YnhPlugin extends Plugin
         $this->grav['session']->user = $user;
         unset($this->grav['user']);
         $this->grav['user'] = $user;
-        $this->grav['log']->info('user exists ? ' . ($user->exists() ? 'true' : 'false'));
         // Redirect
         $route = $this->config->get('plugins.admin.route');
         $base  = '/' . trim($route, '/');
