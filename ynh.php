@@ -38,7 +38,10 @@ class YnhPlugin extends Plugin
                 $this->grav['log']->error('User creation failed, credentials missing');
                 throw new \RuntimeException('User creation failed, credentials missing');
             }
-            $this->authenticateAndRedirectToAdminPanel($username);
+            // then authenticate, and redirect to admin panel
+            // @todo: autodisable plugin
+            $this->authenticateUser($username);
+            $this->redirectToAdminPanel();
         }
     }
 
@@ -71,18 +74,24 @@ class YnhPlugin extends Plugin
     }
 
     /**
-     * Connect and redirect user to admin panel
+     * Connect user
      *
      * @param  string $username
      */
-    protected function authenticateAndRedirectToAdminPanel($username)
+    protected function authenticateUser($username)
     {
         // Auth
         $user = User::load($username);
         $this->grav['session']->user = $user;
         unset($this->grav['user']);
         $this->grav['user'] = $user;
-        // Redirect
+    }
+
+    /**
+     * Redirect to admin panel
+     */
+    protected function redirectToAdminPanel()
+    {
         $route = $this->config->get('plugins.admin.route');
         $base  = '/' . trim($route, '/');
         $this->grav->redirect($base);

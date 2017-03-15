@@ -1,5 +1,5 @@
-name: YunoHost activation
-version: 1.0.0
+name: YunoHost administrator activation
+version: 1.1.0
 description: Create first user for an installation on YunoHost
 icon: sign-in
 author:
@@ -7,7 +7,7 @@ author:
   email: lithrel@randomdomainname.net
   url: http://braindump.randomdomainname.net
 homepage: https://github.com/lithrel/grav-plugin-ynh
-keywords: authentication
+keywords: authentication, yunohost
 bugs: https://github.com/lithrel/grav-plugin-ynh/issues
 license: DBAD
 

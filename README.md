@@ -1,3 +1,5 @@
 # Grav plugin for YunoHost package
 
-Create the first user for a Grav install on YunoHost
+Uses SSOwat authentication to create the first user for a Grav installation on YunoHost.
+
+The user will then be automatically logged in to the admin panel.
